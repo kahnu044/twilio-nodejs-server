@@ -51,7 +51,7 @@ const getCallLogs = (req, res) => {
         let limit = 50
 
         if (req.query?.limit) {
-            limit = req.query?.limit;
+            limit = parseInt(req.query?.limit);
         }
 
         twilioClient.calls.list({ limit: limit })
