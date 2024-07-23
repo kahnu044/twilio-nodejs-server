@@ -5,6 +5,7 @@ const app = express();
 app.use(express.json());
 
 const messageRoutes = require('./routes/messageRoutes');
+const callRoutes = require('./routes/callRoutes');
 
 // Welcome route
 app.get("/", (req, res) => {
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 })
 
 app.use('/api', messageRoutes);
+app.use('/api', callRoutes);
 
 
 // Server listing
