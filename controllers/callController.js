@@ -2,25 +2,43 @@
 const twilioClient = require('../config/twilioConfig');
 
 const makeCall = (req, res) => {
-    const { to, from } = req.body;
 
-    // Replace with your server's URL
-    const url = 'http://demo.twilio.com/docs/voice.xml';
+    try {
 
-    twilioClient.calls
-        .create({ to, from, url })
-        .then(call => {
-            res.json({
-                success: true,
-                message: `Call initiated with SID ${call.sid}`
+        const { to, from } = req.body;
+
+        const phoneNumberPattern = /^\+\d{1,15}$/;
+
+        if (!to || !phoneNumberPattern.test(to)) {
+            return res.status(400).json({ success: 'error', message: 'Invalid to phone number' });
+        }
+
+        if (!from || !phoneNumberPattern.test(from)) {
+            return res.status(400).json({ success: false, message: 'Invalid from phone number' });
+        }
+
+        // Replace with your server's URL
+        // docs for TwiML - https://www.twilio.com/docs/glossary/what-is-twilio-markup-language-twiml
+        const url = 'http://demo.twilio.com/docs/voice.xml';
+
+        twilioClient.calls
+            .create({ to, from, url })
+            .then(call => {
+                res.json({
+                    success: true,
+                    message: `Call initiated to : ${call.to}`,
+                    callSid: call?.sid
+                });
+            })
+            .catch(error => {
+                res.status(500).json({
+                    success: false,
+                    message: `Failed to initiate call: ${error.message}`
+                });
             });
-        })
-        .catch(error => {
-            res.status(500).json({
-                success: false,
-                message: `Failed to initiate call: ${error.message}`
-            });
-        });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error?.message, error: "Internal server error" });
+    }
 };
 
 module.exports = {
