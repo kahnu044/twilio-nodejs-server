@@ -7,7 +7,9 @@ const makeCall = (req, res) => {
 
     try {
 
-        const { to, from } = req.body;
+        const { to } = req.body;
+
+        const from = process.env.TWILIO_FROM_PHONE;
 
         const phoneNumberPattern = /^\+\d{1,15}$/;
 
@@ -15,13 +17,9 @@ const makeCall = (req, res) => {
             return res.status(400).json({ success: 'error', message: 'Invalid to phone number' });
         }
 
-        if (!from || !phoneNumberPattern.test(from)) {
-            return res.status(400).json({ success: false, message: 'Invalid from phone number' });
-        }
-
-        // Replace with your server's URL
         // docs for TwiML - https://www.twilio.com/docs/glossary/what-is-twilio-markup-language-twiml
-        const url = 'http://demo.twilio.com/docs/voice.xml';
+        // Replace with your server's URL
+        const url = process.env.TWILIO_TWIML_VOICE_URL;
 
         twilioClient.calls
             .create({ to, from, url })

@@ -5,16 +5,14 @@ const sendMessage = (req, res) => {
 
     try {
 
-        const { to, from, body } = req.body;
+        const { to, body } = req.body;
+
+        const from = process.env.TWILIO_FROM_PHONE;
 
         const phoneNumberPattern = /^\+\d{1,15}$/;
 
         if (!to || !phoneNumberPattern.test(to)) {
             return res.status(400).json({ success: 'error', message: 'Invalid to phone number' });
-        }
-
-        if (!from || !phoneNumberPattern.test(from)) {
-            return res.status(400).json({ success: false, message: 'Invalid from phone number' });
         }
 
         if (!body || typeof body !== 'string' || body.trim() === '') {
