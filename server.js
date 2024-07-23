@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 3003;
+const messageRoutes = require('./routes/messageRoutes');
 
 // Welcome route
 app.get("/", (req, res) => {
@@ -10,6 +11,7 @@ app.get("/", (req, res) => {
     })
 })
 
+app.use('/api', messageRoutes);
 
 
 // Server listing
