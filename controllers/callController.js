@@ -1,4 +1,6 @@
 // callController
+// Official docs - https://www.twilio.com/docs/voice/api/call-resource
+
 const twilioClient = require('../config/twilioConfig');
 
 const makeCall = (req, res) => {
@@ -42,10 +44,17 @@ const makeCall = (req, res) => {
 };
 
 // docs - https://www.twilio.com/docs/voice/tutorials/how-to-retrieve-call-logs/node
+// pagination - https://www.twilio.com/docs/usage/twilios-response#response-formats-list-paging-information
 const getCallLogs = (req, res) => {
     try {
 
-        twilioClient.calls.list({ limit: 20 }) // Adjust the limit as needed
+        let limit = 50
+
+        if (req.query?.limit) {
+            limit = req.query?.limit;
+        }
+
+        twilioClient.calls.list({ limit: limit })
             .then(calls => {
                 res.json({
                     success: true,
