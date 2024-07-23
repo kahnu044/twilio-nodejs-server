@@ -41,6 +41,31 @@ const makeCall = (req, res) => {
     }
 };
 
+// docs - https://www.twilio.com/docs/voice/tutorials/how-to-retrieve-call-logs/node
+const getCallLogs = (req, res) => {
+    try {
+
+        twilioClient.calls.list({ limit: 20 }) // Adjust the limit as needed
+            .then(calls => {
+                res.json({
+                    success: true,
+                    message: "Call logs fetched successfully",
+                    data: calls
+                });
+            })
+            .catch(error => {
+                res.status(500).json({
+                    success: false,
+                    message: `Failed to retrieve call logs: ${error.message}`
+                });
+            });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error?.message, error: "Internal server error" });
+    }
+};
+
+
 module.exports = {
-    makeCall
+    makeCall,
+    getCallLogs
 };
