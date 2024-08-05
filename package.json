@@ -1,11 +1,10 @@
 {
   "name": "twilio-nodejs-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a Node.js server application that integrates with the Twilio API to manage call logs and make outbound calls. The server is built using Express.js and demonstrates how to structure a project for scalability and maintainability.",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
